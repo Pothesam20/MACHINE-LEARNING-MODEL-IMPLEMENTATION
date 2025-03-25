@@ -1,0 +1,22 @@
+### **Expected Output of the Script**
+When you run the script, you should see an output similar to the following:
+
+```
+Accuracy: 98.12%
+Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.99      0.99      0.99       965
+           1       0.93      0.89      0.91       150
+
+    accuracy                           0.98      1115
+   macro avg       0.96      0.94      0.95      1115
+weighted avg       0.98      0.98      0.98      1115
+```
+
+### **Explanation of Output:**
+- **Accuracy:** The percentage of correct predictions (e.g., 98.12%).
+- **Precision:** Measures how many of the predicted spam emails were actually spam.
+- **Recall:** Measures how many of the actual spam emails were correctly predicted.
+- **F1-score:** The harmonic mean of precision and recall.
+- **Support:** Number of actual occurrences of each class (ham/spam).
