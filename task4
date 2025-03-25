@@ -1,0 +1,54 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load dataset
+def load_data():
+    data = pd.read_csv("spam.csv", encoding='latin-1')
+    data = data[['v1', 'v2']]
+    data.columns = ['label', 'message']
+    data['label'] = data['label'].map({'ham': 0, 'spam': 1})
+    return data
+
+# Preprocess and split data
+def preprocess_data(data):
+    X_train, X_test, y_train, y_test = train_test_split(
+        data['message'], data['label'], test_size=0.2, random_state=42)
+    return X_train, X_test, y_train, y_test
+
+# Convert text to numerical features
+def vectorize_text(X_train, X_test):
+    vectorizer = CountVectorizer()
+    X_train_vec = vectorizer.fit_transform(X_train)
+    X_test_vec = vectorizer.transform(X_test)
+    return X_train_vec, X_test_vec, vectorizer
+
+# Train model
+def train_model(X_train_vec, y_train):
+    model = MultinomialNB()
+    model.fit(X_train_vec, y_train)
+    return model
+
+# Evaluate model
+def evaluate_model(model, X_test_vec, y_test):
+    y_pred = model.predict(X_test_vec)
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred)
+    print(f"Accuracy: {accuracy * 100:.2f}%")
+    print("Classification Report:\n", report)
+
+# Main function
+def main():
+    data = load_data()
+    X_train, X_test, y_train, y_test = preprocess_data(data)
+    X_train_vec, X_test_vec, vectorizer = vectorize_text(X_train, X_test)
+    model = train_model(X_train_vec, y_train)
+    evaluate_model(model, X_test_vec, y_test)
+
+if __name__ == "__main__":
+    main()
